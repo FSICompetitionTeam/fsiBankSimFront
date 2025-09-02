@@ -14,8 +14,8 @@ export default function TransferScreen() {
   const [toBank, setToBank] = useState('');
   const [banks, setBanks] = useState<Bank[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [customModalVisible, setCustomModalVisible] = useState(false); // 커스텀 팝업 상태
-  const [modalMessage, setModalMessage] = useState(''); // 팝업 메시지
+  const [customModalVisible, setCustomModalVisible] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
   const theme = useTheme();
   const params = useLocalSearchParams<{ from_account?: string }>();
   const router = useRouter();
@@ -132,7 +132,7 @@ export default function TransferScreen() {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
-      <Text style={styles.message}>니 <Text style={styles.accountText}>{fromBank} {fromAccount}</Text>에서 {amount ? amount : '0'}원을 옮길까요?</Text>
+      <Text style={styles.message}><Text style={styles.accountText}>{fromBank} {fromAccount}</Text>에서 {amount ? amount : '0'}원을 옮길까요?</Text>
       <TextInput
         placeholder="입금 계좌번호"
         value={toAccount}
@@ -190,7 +190,7 @@ export default function TransferScreen() {
       >
         <Text style={styles.transferButtonText}>옮기기</Text>
       </TouchableOpacity>
-      {/* 커스텀 팝업 Modal */}
+      {}
       <Modal
         visible={customModalVisible}
         animationType="fade"

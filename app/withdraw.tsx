@@ -1,4 +1,4 @@
-// DepositScreen과 유사, POST /transactions/withdraw 호출, 잔고 부족 mock 처리.
+
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import api from '../lib/api';

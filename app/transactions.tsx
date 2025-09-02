@@ -6,7 +6,6 @@ import api from '../lib/api';
 import { useTheme } from '../hooks/useTheme';
 import { Transaction } from './types';
 
-// 섹션 데이터 타입 정의
 type SectionData = {
   title: string;
   data: Transaction[];
@@ -23,7 +22,6 @@ export default function TransactionsScreen() {
   const params = useLocalSearchParams<{ account_number?: string }>();
   const router = useRouter();
 
-  // 변경점 1: useEffect로 accountNumber 상태 설정
   useEffect(() => {
     if (params.account_number) {
       setAccountNumber(params.account_number as string);
@@ -34,24 +32,21 @@ export default function TransactionsScreen() {
     if (!accountNumber) return;
 
     try {
-      // 변경점 2: Promise.all로 두 API 병렬 처리
       const [transactionsResponse, accountResponse] = await Promise.all([
         api.get('/transactions/', { params: { account_number: accountNumber, limit: 20 } }),
         api.get(`/accounts/${accountNumber}`)
       ]);
 
-      // 계좌 정보 설정
       setBalance(accountResponse.data.balance || 0);
       setBankName(accountResponse.data.bank_name || '은행');
 
-      // 변경점 3: 거래 내역 포맷팅 및 그룹핑
       const formattedTxs = transactionsResponse.data.map((tx: Transaction) => ({
         ...tx,
         timestamp: moment(tx.timestamp).format('YYYY.MM.DD HH:mm')
       }));
 
       const groups = formattedTxs.reduce((acc, tx) => {
-        const date = tx.timestamp.split(' ')[0]; // 'YYYY.MM.DD' 부분만 추출
+        const date = tx.timestamp.split(' ')[0];
         if (!acc[date]) {
           acc[date] = [];
         }
@@ -70,7 +65,7 @@ export default function TransactionsScreen() {
       setErrorMessage('데이터를 불러오는 데 실패했습니다. 네트워크 연결을 확인해주세요.');
       setErrorModalVisible(true);
     }
-  }, [accountNumber]); // 의존성 배열 제한
+  }, [accountNumber]);
 
   useFocusEffect(
     useCallback(() => {
@@ -90,18 +85,17 @@ export default function TransactionsScreen() {
     <View style={[styles.container, { backgroundColor: theme.background }]}>
       <View style={styles.header}>
         <Text style={styles.accountNumber}>{bankName}</Text>
-        <Text style={styles.bankName}>{accountNumber || '계좌'}</Text> {/* 계좌번호 밑에 은행 이름 */}
+        <Text style={styles.bankName}>{accountNumber || '계좌'}</Text> {}
         <Text style={styles.balance}>{balance.toLocaleString()}원</Text>
       </View>
       <SectionList
         sections={groupedTransactions}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => {
-          // from_account와 현재 계좌가 같으면 출금, 아니면 입금으로 간주
           const isWithdrawal = item.from_account === accountNumber;
           const displayAccount = isWithdrawal ? item.to_account || '알 수 없음' : item.from_account || '알 수 없음';
           const displayBank = isWithdrawal ? item.to_bank_name || '알 수 없음' : item.from_bank_name || '알 수 없음';
-          const displayAmount = Math.abs(item.amount).toLocaleString(); // 절대값으로 표시
+          const displayAmount = Math.abs(item.amount).toLocaleString();
           const amountColor = isWithdrawal ? theme.error : theme.accent;
 
           return (

@@ -11,10 +11,9 @@ export default function TransferSuccessScreen() {
   const toBank = params.toBank as string;
   const router = useRouter();
   const theme = useTheme();
-  const opacity = useSharedValue(0); // fade in 애니메이션
-
+  const opacity = useSharedValue(0);
   useEffect(() => {
-    opacity.value = withTiming(1, { duration: 500 }); // fade in
+    opacity.value = withTiming(1, { duration: 500 });
   }, []);
 
   const animatedStyle = useAnimatedStyle(() => ({

@@ -3,14 +3,14 @@ import { View, Button, StyleSheet, Alert, Modal, FlatList, TouchableOpacity, Tex
 import api from '../lib/api';
 import { useRouter } from 'expo-router';
 import { useTheme } from '../hooks/useTheme';
-import { Bank } from './types'; // ../types -> ./types로 변경
+import { Bank } from './types';
 
-interface AccountCreateProps {} // props 타입 (필요 시 추가)
+interface AccountCreateProps {}
 
 const AccountCreateScreen: React.FC<AccountCreateProps> = () => {
   const [banks, setBanks] = useState<Bank[]>([]);
   const [selectedBank, setSelectedBank] = useState('');
-  const [modalVisible, setModalVisible] = useState(false); // 모달 상태
+  const [modalVisible, setModalVisible] = useState(false);
   const router = useRouter();
   const theme = useTheme();
 

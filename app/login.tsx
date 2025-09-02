@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
-import MaskInput from 'react-native-mask-input'; // 마스킹 입력
+import MaskInput from 'react-native-mask-input';
 import api from '../lib/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
@@ -29,7 +29,6 @@ const LoginScreen: React.FC<LoginProps> = () => {
     try {
       const response = await api.post('/users/', { phone_number: phoneNumber, name });
       Alert.alert('성공', '회원가입 완료. 로그인하세요.');
-      // 회원가입 후 입력 필드 초기화
       setPhoneNumber('');
       setName('');
     } catch (error) {
@@ -44,7 +43,7 @@ const LoginScreen: React.FC<LoginProps> = () => {
       <MaskInput
         value={phoneNumber}
         onChangeText={setPhoneNumber}
-        mask={['0', '1', '0', '-', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]} // 010-1234-5678 형식
+        mask={['0', '1', '0', '-', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
         placeholder="전화번호"
         style={styles.input}
         keyboardType="phone-pad"

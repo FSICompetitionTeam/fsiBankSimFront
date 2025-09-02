@@ -18,14 +18,14 @@ const BankPicker: React.FC<BankPickerProps> = ({ banks, selectedBank, onSelect }
         items={banks.map((bank) => ({
           label: bank.name,
           value: bank.name,
-          key: bank.code, // key는 옵션, 중복 방지용
+          key: bank.code,
         }))}
         value={selectedBank}
-        placeholder={{ label: '은행 선택...', value: null }} // 플레이스홀더 추가 (선택적)
+        placeholder={{ label: '은행 선택...', value: null }}
         style={{
           inputIOS: { fontSize: 16, padding: 10, borderWidth: 1, borderColor: '#EEE', borderRadius: 5 },
           inputAndroid: { fontSize: 16, padding: 10, borderWidth: 1, borderColor: '#EEE', borderRadius: 5 },
-        }} // Toss-like 간단 스타일
+        }}
       />
     </View>
   );
