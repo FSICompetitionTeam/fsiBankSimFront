@@ -70,7 +70,6 @@ export default function TransferScreen() {
   const handleTransfer = async () => {
     const amt = parseInt(amount) || 0;
     console.log('Validating transfer:', { fromAccount, toAccount, toBank, amount: amt });
-
     if (!fromAccount || fromAccount.trim() === '') {
       console.log('fromAccount validation failed');
       showCustomModal('출금 계좌번호를 확인하세요.');
@@ -91,7 +90,6 @@ export default function TransferScreen() {
       showCustomModal('유효한 금액을 입력하세요.');
       return;
     }
-
     console.log('Sending transfer request:', { from_account: fromAccount, to_account: toAccount, amount: amt });
     try {
       const response = await api.post('/transactions/transfer', { from_account: fromAccount, to_account: toAccount, amount: amt });
@@ -160,6 +158,14 @@ export default function TransferScreen() {
                 </TouchableOpacity>
               )}
               keyExtractor={(item) => item.code}
+              numColumns={2} // 2열로 표시, 8개까지 한 화면에 보이도록
+              initialNumToRender={8} // 초기 8개 항목 렌더링
+              getItemLayout={(data, index) => ({
+                length: 50, // 고정 높이 50px (bankItem의 예상 높이)
+                offset: 50 * Math.floor(index / 2), // 2열 기준 오프셋 계산
+                index,
+              })}
+              style={styles.bankList} // FlatList에 스타일 적용
             />
             <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
               <Text style={styles.closeButtonText}>닫기</Text>
@@ -190,7 +196,6 @@ export default function TransferScreen() {
       >
         <Text style={styles.transferButtonText}>옮기기</Text>
       </TouchableOpacity>
-      {}
       <Modal
         visible={customModalVisible}
         animationType="fade"
@@ -221,7 +226,15 @@ const styles = StyleSheet.create({
   modalContainer: { flex: 1, justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.5)' },
   modalContent: { backgroundColor: '#FFFFFF', margin: 20, borderRadius: 20, padding: 20 },
   modalTitle: { fontSize: 20, fontWeight: 'bold', marginBottom: 10 },
-  bankItem: { flexDirection: 'row', alignItems: 'center', paddingVertical: 10 },
+  bankList: { maxHeight: 400 }, // FlatList 높이 제한으로 스크롤 가능
+  bankItem: { 
+    flex: 1, 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    paddingVertical: 10, 
+    width: '50%', // 2열 레이아웃에 맞게 너비 조정
+    height: 50, // 높이 명시적으로 설정
+  },
   bankIcon: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#EEE', marginRight: 10 },
   bankItemText: { fontSize: 16 },
   closeButton: { padding: 15, backgroundColor: '#0064FF', borderRadius: 30, alignItems: 'center', marginTop: 20 },

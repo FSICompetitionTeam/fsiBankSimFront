@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Button, StyleSheet, Alert, Modal, FlatList, TouchableOpacity, Text } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, Modal,Alert,Button } from 'react-native';
 import api from '../lib/api';
 import { useRouter } from 'expo-router';
 import { useTheme } from '../hooks/useTheme';
@@ -31,16 +31,20 @@ const AccountCreateScreen: React.FC<AccountCreateProps> = () => {
       console.error(error);
       setBanks([
         { name: '한국은행', code: '001' },
-        { name: 'KB국민은행(KB금융그룹 계열)', code: '004' },
-        { name: '우리은행(우리금융그룹 계열)', code: '020' },
+        { name: 'KB국민은행', code: '004' },
+        { name: '우리은행', code: '020' },
         { name: 'SC제일은행', code: '023' },
         { name: '한국씨티은행', code: '027' },
-        { name: 'iM뱅크(iM금융그룹 계열)', code: '031' },
-        { name: '하나은행(하나금융그룹 계열)', code: '081' },
-        { name: '신한은행(신한금융지주 계열)', code: '088' },
-        { name: '케이뱅크(KT 계열)', code: '089' },
-        { name: '카카오뱅크(카카오 계열)', code: '090' },
-        { name: '토스뱅크(비바리퍼블리카 계열)', code: '092' },
+        { name: 'iM뱅크', code: '031' },
+        { name: '하나은행', code: '081' },
+        { name: '신한은행', code: '088' },
+        { name: '케이뱅크', code: '089' },
+        { name: '카카오뱅크', code: '090' },
+        { name: '토스뱅크', code: '092' },
+        { name: 'Upbit(케이뱅크)', code: '093' },
+        { name: 'Bithumb(국민은행)', code: '094' },
+        { name: 'Coinone(카카오뱅크)', code: '095' },
+        { name: 'Korbit(신한은행)', code: '096' },
       ]);
     }
   };
@@ -88,6 +92,14 @@ const AccountCreateScreen: React.FC<AccountCreateProps> = () => {
                 </TouchableOpacity>
               )}
               keyExtractor={(item) => item.code}
+              numColumns={2} // 2열로 표시, 8개까지 한 화면에 보이도록
+              initialNumToRender={8} // 초기 8개 항목 렌더링
+              getItemLayout={(data, index) => ({
+                length: 50, // 고정 높이 50px (bankItem의 예상 높이)
+                offset: 50 * Math.floor(index / 2), // 2열 기준 오프셋 계산
+                index,
+              })}
+              style={styles.bankList} // FlatList에 스타일 적용
             />
             <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
               <Text style={styles.closeButtonText}>닫기</Text>
@@ -108,7 +120,15 @@ const styles = StyleSheet.create({
   modalContainer: { flex: 1, justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.5)' },
   modalContent: { backgroundColor: '#FFFFFF', margin: 20, borderRadius: 20, padding: 20 },
   modalTitle: { fontSize: 20, fontWeight: 'bold', marginBottom: 10 },
-  bankItem: { flexDirection: 'row', alignItems: 'center', paddingVertical: 10 },
+  bankList: { maxHeight: 400 }, // FlatList 높이 제한으로 스크롤 가능
+  bankItem: { 
+    flex: 1, 
+    flexDirection: 'row', 
+    alignItems: 'center', 
+    paddingVertical: 10, 
+    width: '50%', // 2열 레이아웃에 맞게 너비 조정
+    height: 50, // 높이 명시적으로 설정
+  },
   bankIcon: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#EEE', marginRight: 10 },
   bankItemText: { fontSize: 16 },
   closeButton: { padding: 15, backgroundColor: '#0064FF', borderRadius: 30, alignItems: 'center', marginTop: 20 },
