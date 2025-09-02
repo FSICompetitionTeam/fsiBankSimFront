@@ -79,8 +79,8 @@ const styles = StyleSheet.create({
   return (
     <View style={[styles.container, { backgroundColor: theme.background }]}>
       <View style={styles.header}>
-        <Text style={styles.sectionTitle}>내 계좌</Text>
-        <TouchableOpacity onPress={handleAddAccount} style={styles.addButton}>
+        <Text style={styles.sectionTitle}>홈</Text>
+        <TouchableOpacity onPress={handleAddAccount}>
           <Text style={styles.addButtonText}>+</Text>
         </TouchableOpacity>
       </View>
